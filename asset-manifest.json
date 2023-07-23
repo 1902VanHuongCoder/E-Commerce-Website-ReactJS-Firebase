@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/Crud-app-with-firebase/static/css/main.3113e702.css",
+    "main.js": "/Crud-app-with-firebase/static/js/main.ed430faa.js",
+    "static/media/signinimg.jpg": "/Crud-app-with-firebase/static/media/signinimg.9f0f8915a9067bfaaa03.jpg",
+    "static/media/loginimg.jpg": "/Crud-app-with-firebase/static/media/loginimg.d1c72ff4df709c60d636.jpg",
+    "static/media/hat2.png": "/Crud-app-with-firebase/static/media/hat2.1df3408df233afd96b20.png",
+    "static/media/hat1.png": "/Crud-app-with-firebase/static/media/hat1.cc2b43995ca10d478303.png",
+    "static/media/woman.png": "/Crud-app-with-firebase/static/media/woman.257004052fb4d9b1e99c.png",
+    "static/media/shoes1.png": "/Crud-app-with-firebase/static/media/shoes1.9238e50d49cfc86ec549.png",
+    "static/media/shirt1.png": "/Crud-app-with-firebase/static/media/shirt1.fde3dd6faea5be1e1d0e.png",
+    "static/media/shoes2.png": "/Crud-app-with-firebase/static/media/shoes2.5d47cb047ab26df3ae78.png",
+    "static/media/shoes3.png": "/Crud-app-with-firebase/static/media/shoes3.4b94953832a9fbec91b0.png",
+    "static/media/hat3.png": "/Crud-app-with-firebase/static/media/hat3.2d7addbb1b1a743705bf.png",
+    "static/media/shirt3.png": "/Crud-app-with-firebase/static/media/shirt3.9882eac001e1227b1266.png",
+    "static/media/shirt2.png": "/Crud-app-with-firebase/static/media/shirt2.81e9ae096b4753e6e583.png",
+    "static/media/logo.png": "/Crud-app-with-firebase/static/media/logo.18673f9d7a2a7f6e75f1.png",
+    "static/media/messenger.png": "/Crud-app-with-firebase/static/media/messenger.91599f6d67b53e425b7f.png",
+    "static/media/instagram.png": "/Crud-app-with-firebase/static/media/instagram.79535458a8a6d88f81d4.png",
+    "static/media/git hub.png": "/Crud-app-with-firebase/static/media/git hub.c2c1684c95ee51ed6e44.png",
+    "static/media/yellowandblackstripe.jpg": "/Crud-app-with-firebase/static/media/yellowandblackstripe.ed37f09d35c5a6f8f06c.jpg",
+    "index.html": "/Crud-app-with-firebase/index.html",
+    "main.3113e702.css.map": "/Crud-app-with-firebase/static/css/main.3113e702.css.map",
+    "main.ed430faa.js.map": "/Crud-app-with-firebase/static/js/main.ed430faa.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3113e702.css",
+    "static/js/main.ed430faa.js"
+  ]
+}
