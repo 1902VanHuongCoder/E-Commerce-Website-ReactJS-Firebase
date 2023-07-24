@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.7b160e41.css",
-    "main.js": "/static/js/main.37f3ab79.js",
+    "main.css": "/static/css/main.4dfb11a6.css",
+    "main.js": "/static/js/main.439f85ad.js",
     "static/media/signinimg.jpg": "/static/media/signinimg.9f0f8915a9067bfaaa03.jpg",
     "static/media/loginimg.jpg": "/static/media/loginimg.d1c72ff4df709c60d636.jpg",
     "static/media/hat2.png": "/static/media/hat2.1df3408df233afd96b20.png",
@@ -20,11 +20,11 @@
     "static/media/git hub.png": "/static/media/git hub.c2c1684c95ee51ed6e44.png",
     "static/media/yellowandblackstripe.jpg": "/static/media/yellowandblackstripe.ed37f09d35c5a6f8f06c.jpg",
     "index.html": "/index.html",
-    "main.7b160e41.css.map": "/static/css/main.7b160e41.css.map",
-    "main.37f3ab79.js.map": "/static/js/main.37f3ab79.js.map"
+    "main.4dfb11a6.css.map": "/static/css/main.4dfb11a6.css.map",
+    "main.439f85ad.js.map": "/static/js/main.439f85ad.js.map"
   },
   "entrypoints": [
-    "static/css/main.7b160e41.css",
-    "static/js/main.37f3ab79.js"
+    "static/css/main.4dfb11a6.css",
+    "static/js/main.439f85ad.js"
   ]
 }
