@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/Crud-app-with-firebase/static/css/main.4dfb11a6.css",
-    "main.js": "/Crud-app-with-firebase/static/js/main.0a02bf4e.js",
+    "main.css": "/Crud-app-with-firebase/static/css/main.679b1c74.css",
+    "main.js": "/Crud-app-with-firebase/static/js/main.9248b0a9.js",
     "static/media/signinimg.jpg": "/Crud-app-with-firebase/static/media/signinimg.9f0f8915a9067bfaaa03.jpg",
+    "static/media/cuteRobot.jpg": "/Crud-app-with-firebase/static/media/cuteRobot.fe24ba894974f4117e1a.jpg",
     "static/media/loginimg.jpg": "/Crud-app-with-firebase/static/media/loginimg.d1c72ff4df709c60d636.jpg",
     "static/media/hat2.png": "/Crud-app-with-firebase/static/media/hat2.1df3408df233afd96b20.png",
     "static/media/hat1.png": "/Crud-app-with-firebase/static/media/hat1.cc2b43995ca10d478303.png",
@@ -16,15 +17,16 @@
     "static/media/shirt2.png": "/Crud-app-with-firebase/static/media/shirt2.81e9ae096b4753e6e583.png",
     "static/media/logo.png": "/Crud-app-with-firebase/static/media/logo.18673f9d7a2a7f6e75f1.png",
     "static/media/messenger.png": "/Crud-app-with-firebase/static/media/messenger.91599f6d67b53e425b7f.png",
+    "static/media/pagenotfound.jpg": "/Crud-app-with-firebase/static/media/pagenotfound.d7a863dc4a600efbc2a8.jpg",
     "static/media/instagram.png": "/Crud-app-with-firebase/static/media/instagram.79535458a8a6d88f81d4.png",
     "static/media/git hub.png": "/Crud-app-with-firebase/static/media/git hub.c2c1684c95ee51ed6e44.png",
     "static/media/yellowandblackstripe.jpg": "/Crud-app-with-firebase/static/media/yellowandblackstripe.ed37f09d35c5a6f8f06c.jpg",
     "index.html": "/Crud-app-with-firebase/index.html",
-    "main.4dfb11a6.css.map": "/Crud-app-with-firebase/static/css/main.4dfb11a6.css.map",
-    "main.0a02bf4e.js.map": "/Crud-app-with-firebase/static/js/main.0a02bf4e.js.map"
+    "main.679b1c74.css.map": "/Crud-app-with-firebase/static/css/main.679b1c74.css.map",
+    "main.9248b0a9.js.map": "/Crud-app-with-firebase/static/js/main.9248b0a9.js.map"
   },
   "entrypoints": [
-    "static/css/main.4dfb11a6.css",
-    "static/js/main.0a02bf4e.js"
+    "static/css/main.679b1c74.css",
+    "static/js/main.9248b0a9.js"
   ]
 }
