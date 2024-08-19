@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
+import "./css/index.css";
 import { ToastProvider } from "rc-toastr";
 import "rc-toastr/dist/index.css";
 import LoginProvider from "./components/Context/LoginContext";
