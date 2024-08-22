@@ -1,4 +1,5 @@
 import logo from "../../assets/logo.png";
+import logo2 from "../../assets/Annbii.png";
 import { FaUserAlt } from "react-icons/fa";
 import github from "../../assets/git hub.png";
 import { Dropdown, Navbar } from "flowbite-react";
@@ -27,25 +28,15 @@ export default function NavbarWithDropdown() {
   };
   return (
     <Navbar fluid rounded>
-      <Navbar.Brand>
-        <img alt="Flowbite React Logo" className="mr-3 h-6 sm:h-9" src={logo} />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          PaulToStore
-        </span>
-      </Navbar.Brand>
+    
+      <div className="w-[80px] h-[80px] rounded-full overflow-hidden">
+
+        <img alt="Flowbite React Logo" className="w-full h-full object-contain" src={logo2} />
+      </div>
+        
+         {/* <span className="font-test1">AnnBii store</span> */}
+      
       <div className="flex md:order-2 gap-3">
-        <a href="http://localhost:3000/" className="hidden sm:block">
-          <img src={messenger} alt="messenger" width={40} height={40} />
-        </a>
-        <a
-          href="https://github.com/1902VanHuongCoder"
-          className="hidden sm:block"
-        >
-          <img src={github} alt="github" width={40} height={40} />
-        </a>
-        <a href="http://localhost:3000/" className="hidden sm:block">
-          <img src={instagram} alt="instagram" width={40} height={40} />
-        </a>
         {isLogin && (
           <Dropdown
             inline

@@ -6,6 +6,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        custom: ['"Baloo Bhai 2"', "sans"],
+        test: ['"Playwrite CU"', "cursive"],
+        test1: ['"Qwitcher Grypen"', "cursive"],
+      },
       colors: {
         primary: {
           50: "#eff6ff",

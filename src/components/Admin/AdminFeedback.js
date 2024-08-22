@@ -1,6 +1,6 @@
 import React from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { LuEdit } from "react-icons/lu";
+// import { LuEdit } from "react-icons/lu";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 import { useState, useEffect } from "react";
@@ -81,7 +81,7 @@ const AdminFeedback = ({ handleShowModal }) => {
                         className="bg-white p-2 rounded-lg"
                         onClick={() => handleResponsingUserFeedback(item.id)}
                       >
-                        <LuEdit />
+                        {/* <LuEdit /> */}
                       </button>
                     </div>
                     {item.public ? (
