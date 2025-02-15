@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
+// import logo from "../../assets/logo.png";
 import { useForm } from "react-hook-form";
 import { db } from "../../firebase_setup/firebase";
 import { useToast } from "rc-toastr";
@@ -51,7 +51,7 @@ const AdminSigninForm = () => {
         <div className="flex flex-col items-center justify-center px-6 py-[30px] mx-auto md:min-h-screen">
           <Link to="/">
             <p className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-              <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
+              {/* <img className="w-8 h-8 mr-2" src={logo} alt="logo" /> */}
               Paul To Shop
             </p>
           </Link>

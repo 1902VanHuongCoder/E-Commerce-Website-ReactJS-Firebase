@@ -1,27 +1,34 @@
-import Banner from "./Home/Banner";
-import Footer from "./Home/Footer";
-import Products from "./Home/Products";
-import NavbarWithDropdown from "./Home/Navbar";
-import ShoppingCart from "./Home/ShoppingCart";
-import { db } from "../firebase_setup/firebase";
-import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import Loading from "./Loading";
-import { useToast } from "rc-toastr";
-import Feeback from "./Home/Feeback";
+import React, { useEffect, useState, useContext } from "react";
+import {
+  Feeback,
+  Banner,
+  Footer,
+  Products,
+  NavbarWithDropdown,
+  ShoppingCart,
+  Loading,
+} from "../helpers";
+import { AppContext, LoginContext } from "../contextHelpers";
 
-import { useContext } from "react";
-import { LoginContext } from "./Context/LoginContext";
-import { AppContext } from "./Context/AppContext";
+import { db } from "../firebase_setup/firebase";
+import { collection, getDocs } from "firebase/firestore";
+
+import { useToast } from "rc-toastr";
+
 const Home = () => {
-  const { account, setAccount } = useContext(AppContext);
+  // Contexts for managing global state
+  const { setAccount } = useContext(AppContext);
   const { isLogin, func } = useContext(LoginContext);
 
+  // Toast notification hook
   const { toast } = useToast();
+
+  // Local state for product data, shopping cart data, and loading state
   const [data, setData] = useState();
   const [shoppingCartData, setShoppingCartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Function to fetch product data from Firestore
   const fetchData = async () => {
     setLoading(true);
     await getDocs(collection(db, "products")).then((response) => {
@@ -33,27 +40,31 @@ const Home = () => {
     });
     setLoading(false);
   };
+
+  // Fetch product data on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Function to handle adding a product to the shopping cart
   const handleAddProduct = (id) => {
     const haveProduct = shoppingCartData.find((item) => item.id === id);
     if (!haveProduct) {
       const product = data.filter((item) => item.id === id);
       setShoppingCartData([...shoppingCartData, product[0]]);
-      toast("You have just added this product into shopping cart");
+      toast("Bạn vừa thêm sản phẩm này vào giỏ hàng");
     } else {
-      toast("This product has already been shopping cart!");
+      toast("Sản phẩm này đã có trong giỏ hàng!");
     }
   };
 
+  // Function to handle removing a product from the shopping cart
   const handleRemoveProductOutOfShoppingCart = (id) => {
     const filterdData = shoppingCartData.filter((product) => product.id !== id);
     setShoppingCartData(filterdData);
   };
 
-
+  // Check if the user is logged in and set the account state accordingly
   useEffect(() => {
     if (!isLogin) {
       const loggedInAccount = JSON.parse(
@@ -64,6 +75,7 @@ const Home = () => {
         setAccount(loggedInAccount);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
   return (
@@ -71,15 +83,15 @@ const Home = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="relative max-w-[1200px] mx-auto">
+        <div className="relative max-w-screen mx-auto">
           <NavbarWithDropdown />
           <Banner data={data} />
-          <ShoppingCart
+          {/* <ShoppingCart
             products={shoppingCartData}
             handleRemoveProductOutOfShoppingCart={
               handleRemoveProductOutOfShoppingCart
             }
-          />
+          /> */}
           <Products data={data} handleAddProduct={handleAddProduct} />
           <Feeback />
           <Footer />

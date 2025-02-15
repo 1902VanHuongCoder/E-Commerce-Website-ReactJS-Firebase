@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
-import logo from "../../assets/logo.png";
+// import logo from "../../assets/logo.png";
 import { useState, useEffect } from "react";
 import { db } from "../../firebase_setup/firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
@@ -94,7 +94,7 @@ const Feeback = () => {
                 <div className="mt-4 ml-[32px]">
                   <div className="flex items-center gap-x-1">
                     <div className="w-8 h-8 bg-slate-100 flex justify-center items-center rounded-full text-xl">
-                      <img src={logo} alt="logo" />
+                      {/* <img src={logo} alt="logo" /> */}
                     </div>
                     <span className="bg-[#e2d6fb] p-1 rounded-lg">Shop</span>
                   </div>

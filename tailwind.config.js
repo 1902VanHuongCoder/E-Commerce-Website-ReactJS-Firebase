@@ -10,6 +10,9 @@ module.exports = {
         custom: ['"Baloo Bhai 2"', "sans"],
         test: ['"Playwrite CU"', "cursive"],
         test1: ['"Qwitcher Grypen"', "cursive"],
+        bodonimoda: ['"Bodoni Moda"', "serif"],
+        librebaskerville: ['"Libre Baskerville"', "serif"],
+        roboto: ['"Roboto"', "serif"],
       },
       colors: {
         primary: {
