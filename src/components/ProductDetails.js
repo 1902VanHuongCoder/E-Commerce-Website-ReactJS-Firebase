@@ -1,40 +1,87 @@
-import React, { useContext, useState } from "react";
-import NavbarWithDropdown from "./Home/Navbar";
-import { useLocation, useNavigate } from "react-router-dom";
-import { FaLocationDot } from "react-icons/fa6";
-import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
-import { LoginContext } from "./Context/LoginContext";
+import React, { useContext, useState, useEffect } from "react";
+import { NavbarWithDropdown } from "../helpers";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LoginContext } from "../contextHelpers";
 import { useToast } from "rc-toastr";
+import { db } from "../firebase_setup/firebase"; // Import your Firebase setup
+import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
+import { FaMoneyBillAlt, FaShoppingCart } from "react-icons/fa";
+import { FaArrowLeftLong } from "react-icons/fa6";
+
 const ProductDetails = () => {
-  const [showMore, setShowMore] = useState(false);
-  const {isLogin} = useContext(LoginContext);
+  const { isLogin } = useContext(LoginContext);
   const navigate = useNavigate();
   const { state } = useLocation();
-  const {toast} = useToast();
+  const { toast } = useToast();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [productId] = useState(state[0]?.id); // Extract product ID from state
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const productRef = doc(db, "products", productId);
+        const productSnap = await getDoc(productRef);
+        if (productSnap.exists()) {
+          setProduct(productSnap.data());
+        } else {
+          setError("Product not found");
+        }
+      } catch (err) {
+        setError("Failed to fetch product details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (productId) {
+      fetchProduct();
+    } else {
+      setError("Invalid product ID");
+      setLoading(false);
+    }
+  }, [productId]);
+
   const handleBuyProduct = () => {
-    if(isLogin){
-      navigate("/order", { state: state[0] });
-    }else{
+    if (isLogin) {
+      navigate("/order", { state: product });
+    } else {
       toast("Log in please!");
       return;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
+
   return (
-    <div className="relative">
+    <div className="relative font-roboto">
       <NavbarWithDropdown />
-      <div className="w-[95%] min-h-screen bg-white mx-auto grid grid-cols-1 gap-y-5 lg:grid-cols-4">
-        <div className="w-full">
-          <div className="w-full flex justify-center">
+      <div className="w-full px-4 sm:px-10 min-h-screen bg-white mx-auto grid grid-cols-1 gap-y-5 lg:grid-cols-4 pt-10">
+        <div className="w-full border-r-[1px] border-r-solid border-gray-100 pr-4">
+          <div className="w-full flex justify-center items-center">
             <img
-              className="w-[60%] lg:w-full"
-              src={state[0].imageURL}
-              alt="product"
+              className="w-[80%] sm:w-[60%] lg:w-full"
+              src={product?.imageURL}
+              alt="Ảnh sản phẩm"
             />
           </div>
         </div>
-        <div className="col-span-2 px-5">
-          <h1 className="text-[28px] text-[#6d6d6d]">{state[0].productName}</h1>
-          <div className="flex gap-x-3 py-3">
+        <div className="col-span-3 px-2 sm:px-5">
+          <h1 className="text-[20px] sm:text-[28px] text-[#6d6d6d]">
+            {product?.productName}
+          </h1>
+          <div className="flex flex-wrap gap-x-3 py-3">
             <div className="flex items-center">
               <svg
                 className="w-4 h-4 text-yellow-300 mr-1"
@@ -82,26 +129,26 @@ const ProductDetails = () => {
                 <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
               </svg>
               <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                4.95 out of 5
+                4.95/5
               </p>
             </div>
-            <span className="text-[#0069ff]">26,028 ratings </span>
+            <span className="text-[#0069ff]">26,028 xếp hạng </span>
             <span className="text-[#6d6d6d]"> |</span>
-            <span className="text-[#0069ff]"> 33 answered questions </span>
+            <span className="text-[#0069ff]"> 33 câu hỏi được trả lời </span>
           </div>
           <hr />
-          <div className="text-[24px] py-2">
+          <div className="text-[20px] sm:text-[24px] py-2 text-[#091F5B] font-bold">
             <sup>$</sup>
-            {state[0].productPrice}
+            {product?.productPrice}
           </div>
           <div>
-            <p>Color: </p>
-            <div className="my-3">
-              {state[0].productColors.map((color, i) => {
+            <p className="font-bold">Các phiên bản màu</p>
+            <div className="my-3 flex flex-wrap gap-2">
+              {product?.productColors.map((color, i) => {
                 return (
                   <span
                     key={i}
-                    className="mr-2 px-3 py-2 rounded-sm border border-solid border-[rgba(0,0,0,.5)]"
+                    className="px-3 py-2 rounded-sm border border-solid border-[rgba(0,0,0,.8)]"
                   >
                     {color}
                   </span>
@@ -110,99 +157,43 @@ const ProductDetails = () => {
             </div>
           </div>
           <div className="mt-[30px]">
-            <p>Details: </p>
+            <p className="font-bold">Chi tiết sản phẩm</p>
             <div
-              className={`px-4 mb-[60px] relative ${
-                showMore ? "h-full" : "h-[200px] overflow-hidden"
-              } transition-[height] duration-100`}
+              className={`px-4 sm:mb-[90px] mb-[120px] pt-2 relative text-sm text-justify duration-100 transition-all`}
             >
-              <div
-                onClick={() => {
-                  setShowMore(!showMore);
-                }}
-                className={`absolute w-full bg-gradient-to-t from-sky-100  h-[60px] ${
-                  showMore ? "bottom-[-60px]" : "bottom-0"
-                } cursor-pointer`}
-              >
-                {showMore ? (
-                  <div className="h-full flex justify-center items-center gap-x-1">
-                    <span>Less</span>
-                    <span>
-                      <AiOutlineArrowUp />
-                    </span>
-                  </div>
-                ) : (
-                  <div className="h-full flex justify-center items-center gap-x-1">
-                    <span>More </span>
-                    <span>
-                      <AiOutlineArrowDown />
-                    </span>
-                  </div>
-                )}
-              </div>
-              {state[0].details.map((item, i) => {
+              {product?.details.map((item, i) => {
                 return <li key={i}>{item}</li>;
               })}
             </div>
           </div>
         </div>
-        <div>
-          <div className="p-2 border border-solid border-[rgba(0,0,0,.3)] rounded-lg mb-5 lg:mb-0">
-            <h1 className="text-[24px]">
-              <sup>$</sup>
-              {state[0].productPrice}
-            </h1>
-            <div className="py-3">
-              No Import Fees Deposit & $27.05 Shipping to Vietnam
-            </div>
-            <div className="py-1">
-              Delivery <b>Monday, August 28</b>
-            </div>
-            <div className="flex items-center gap-x-1">
-              <FaLocationDot className="text-red-500" />{" "}
-              <span className="text-[#0069ff]">Delivery to Vietnam</span>
-            </div>
-            <div className="w-full flex justify-center items-center">
-              <button
-                onClick={handleBuyProduct}
-                className="w-[80%] my-2 bg-[#ffd814] py-1 rounded-sm hover:opacity-50"
-              >
-                Buy Now
-              </button>
-            </div>
-            <div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Payment</span>
-                <span className="text-[#0069ff] basis-2/3">
-                  Secure transaction
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Ships from</span>
-                <span className="basis-2/3">Amazon.com</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Sold by</span>
-                <span className="basis-2/3">Amazon.com</span>
-              </div>
-              <div className="flex justify-between items-start">
-                <span className="text-sm">Return</span>
-                <span className="text-[#0069ff] basis-2/3">
-                  Eligible for Return, Refund or Replacement within 30 days of
-                  receipt
-                </span>
-              </div>
-              <div className="flex justify-between items-start">
-                <span className="text-sm">Packaging</span>
-                <span className="text-[#0069ff] basis-2/3">
-                  Shows what's inside
-                </span>
-              </div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
+      </div>
+      <div className="fixed bottom-0 left-0 flex flex-col sm:flex-row justify-between px-4 py-2 sm:py-0 sm:px-10 gap-y-2 sm:gap-x-5 items-center w-full h-auto sm:h-[70px] border-t-[1px] border-t-solid border-gray-100 bg-white drop-shadow-2xl">
+        <Link
+          to="/order"
+          className="hidden sm:flex items-center gap-x-2 text-[#091F5B] text-xl"
+        >
+          <span>
+            <FaArrowLeftLong />
+          </span>
+          <span>Quay lại</span>
+        </Link>
+        <div className="flex flex-col sm:flex-row justify-end gap-y-2 sm:gap-x-5 w-full sm:w-fit">
+          <button className="flex items-center justify-center gap-x-2 border-[2px] border-solid border-[#091F5B] text-[#091F5B] py-3 px-6 rounded-md w-full sm:w-auto ">
+            <span>
+              <FaShoppingCart />
+            </span>
+            <span>THÊM VÀO GIỎ HÀNG</span>
+          </button>
+          <button
+            onClick={handleBuyProduct}
+            className="flex items-center justify-center gap-x-2 bg-[#091F5B] text-white py-3 px-6 rounded-md w-full sm:w-auto"
+          >
+            <span>
+              <FaMoneyBillAlt />
+            </span>
+            <span>MUA NGAY</span>
+          </button>
         </div>
       </div>
     </div>

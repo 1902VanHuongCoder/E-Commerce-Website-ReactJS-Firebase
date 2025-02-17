@@ -1,18 +1,19 @@
 import React from "react";
-import { RingLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 const Loading = ({ loading }) => {
   const override = {
     display: "block",
   };
   return (
     <div className="w-screen h-screen bg-white fixed z-100 top-0 left-0 flex justify-center items-center">
-      <RingLoader
-        color="#e67af3"
-        size={38}
-        css={override}
+      <MoonLoader
         aria-label="Loading Spinner"
+        size={38}
+        color="#091F5B"
+        speedMultiplier={1}
         data-testid="loader"
         loading={loading}
+        css={override}
       />
     </div>
   );

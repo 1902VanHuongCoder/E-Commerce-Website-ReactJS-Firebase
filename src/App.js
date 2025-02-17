@@ -17,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/dangnhap" element={<Login />}></Route>
         <Route path="/dangkytaikhoan" element={<Signin />}></Route>
+        <Route path="/details/:productId" element={<ProductDetails />}></Route>
 
         <Route path="/order" element={<Order />}></Route>
         <Route path="/error" element={<Error />} />
@@ -27,7 +28,6 @@ function App() {
         <Route path="/admin/signin" element={<AdminSigninForm />}></Route>
         <Route path="/orderhistory" element={<OrderHistory />}></Route>
         <Route path="/searchresult" element={<SearchResult />}></Route>
-        <Route path="/details/:productId" element={<ProductDetails />}></Route>
       </Routes>
     </BrowserRouter>
   );
