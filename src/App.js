@@ -17,17 +17,20 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/dangnhap" element={<Login />}></Route>
         <Route path="/dangkytaikhoan" element={<Signin />}></Route>
-        <Route path="/details/:productId" element={<ProductDetails />}></Route>
+        <Route
+          path="/chitietsanpham/:productId"
+          element={<ProductDetails />}
+        ></Route>
+        <Route path="/dathang/:productId" element={<Order />}></Route>
+        <Route path="/lichsumuahang" element={<OrderHistory />}></Route>
 
-        <Route path="/order" element={<Order />}></Route>
-        <Route path="/error" element={<Error />} />
-        <Route path="*" element={<Navigate to="/error" />} />
         <Route path="/admin" element={<Admin />}></Route>
-
         <Route path="/admin/login" element={<AdminLogin />}></Route>
         <Route path="/admin/signin" element={<AdminSigninForm />}></Route>
-        <Route path="/orderhistory" element={<OrderHistory />}></Route>
         <Route path="/searchresult" element={<SearchResult />}></Route>
+
+        <Route path="/error" element={<Error />} />
+        <Route path="*" element={<Navigate to="/error" />} />
       </Routes>
     </BrowserRouter>
   );

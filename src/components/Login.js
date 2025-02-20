@@ -80,7 +80,7 @@ const Login = () => {
     <div className="font-roboto relative max-w-screen h-screen flex justify-center items-center bg-[#F8FBFF]">
       <div className="h-screen sm:block hidden">
         <img
-          class="h-full object-top"
+          className="h-full object-top"
           src={fashionImg}
           alt="A model with her outfit"
         />
@@ -128,6 +128,7 @@ const Login = () => {
               Mật khẩu
             </label>
             <input
+              autoComplete="on"
               type={showPassword ? "text" : "password"}
               name="password"
               id="password"

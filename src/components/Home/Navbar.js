@@ -74,7 +74,7 @@ export default function NavbarWithDropdown() {
             </li>
           </Link>
           {isLogin && (
-            <Link to={"/orderhistory"}>
+            <Link to={"/lichsumuahang"}>
               <li
                 className={`inline-block mx-3 uppercase ${isActive(
                   "/orderhistory"

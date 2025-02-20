@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NavbarWithDropdown } from "../helpers";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { LoginContext } from "../contextHelpers";
 import { useToast } from "rc-toastr";
 import { db } from "../firebase_setup/firebase"; // Import your Firebase setup
@@ -11,12 +11,11 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 const ProductDetails = () => {
   const { isLogin } = useContext(LoginContext);
   const navigate = useNavigate();
-  const { state } = useLocation();
   const { toast } = useToast();
+  const { productId } = useParams(); // Get product ID from URL parameters
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [productId] = useState(state[0]?.id); // Extract product ID from state
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -26,10 +25,10 @@ const ProductDetails = () => {
         if (productSnap.exists()) {
           setProduct(productSnap.data());
         } else {
-          setError("Product not found");
+          setError("Không tìm thấy sản phẩm");
         }
       } catch (err) {
-        setError("Failed to fetch product details");
+        setError("Tải thông tin sản phẩm thất bại");
       } finally {
         setLoading(false);
       }
@@ -38,16 +37,16 @@ const ProductDetails = () => {
     if (productId) {
       fetchProduct();
     } else {
-      setError("Invalid product ID");
+      setError("Thông tin về sản phẩm không đang được cập nhật");
       setLoading(false);
     }
   }, [productId]);
 
   const handleBuyProduct = () => {
     if (isLogin) {
-      navigate("/order", { state: product });
+      navigate(`/dathang/${productId}`, { state: product });
     } else {
-      toast("Log in please!");
+      toast("Hãy đăng nhập để mua hàng!");
       return;
     }
   };
@@ -67,7 +66,7 @@ const ProductDetails = () => {
   return (
     <div className="relative font-roboto">
       <NavbarWithDropdown />
-      <div className="w-full px-4 sm:px-10 min-h-screen bg-white mx-auto grid grid-cols-1 gap-y-5 lg:grid-cols-4 pt-10">
+      <div className="w-full px-4 sm:mb-[70px] mb-[140px] sm:px-10 min-h-screen mx-auto grid grid-cols-1 gap-y-5 lg:grid-cols-4 pt-1 sm:pt-10">
         <div className="w-full border-r-[1px] border-r-solid border-gray-100 pr-4">
           <div className="w-full flex justify-center items-center">
             <img
@@ -81,7 +80,7 @@ const ProductDetails = () => {
           <h1 className="text-[20px] sm:text-[28px] text-[#6d6d6d]">
             {product?.productName}
           </h1>
-          <div className="flex flex-wrap gap-x-3 py-3">
+          <div className="flex flex-wrap gap-x-3 pb-3">
             <div className="flex items-center">
               <svg
                 className="w-4 h-4 text-yellow-300 mr-1"
@@ -137,7 +136,7 @@ const ProductDetails = () => {
             <span className="text-[#0069ff]"> 33 câu hỏi được trả lời </span>
           </div>
           <hr />
-          <div className="text-[20px] sm:text-[24px] py-2 text-[#091F5B] font-bold">
+          <div className="text-[20px] sm:text-[24px] py-4 text-[#091F5B] font-bold">
             <sup>$</sup>
             {product?.productPrice}
           </div>
@@ -148,7 +147,7 @@ const ProductDetails = () => {
                 return (
                   <span
                     key={i}
-                    className="px-3 py-2 rounded-sm border border-solid border-[rgba(0,0,0,.8)]"
+                    className="px-2 py-1 text-sm rounded-sm border border-solid border-[rgba(0,0,0,.8)]"
                   >
                     {color}
                   </span>
@@ -156,10 +155,10 @@ const ProductDetails = () => {
               })}
             </div>
           </div>
-          <div className="mt-[30px]">
+          <div className="mt-[25px]">
             <p className="font-bold">Chi tiết sản phẩm</p>
             <div
-              className={`px-4 sm:mb-[90px] mb-[120px] pt-2 relative text-sm text-justify duration-100 transition-all`}
+              className={`px-4 pt-2 relative text-sm text-justify duration-100 transition-all`}
             >
               {product?.details.map((item, i) => {
                 return <li key={i}>{item}</li>;
@@ -170,7 +169,7 @@ const ProductDetails = () => {
       </div>
       <div className="fixed bottom-0 left-0 flex flex-col sm:flex-row justify-between px-4 py-2 sm:py-0 sm:px-10 gap-y-2 sm:gap-x-5 items-center w-full h-auto sm:h-[70px] border-t-[1px] border-t-solid border-gray-100 bg-white drop-shadow-2xl">
         <Link
-          to="/order"
+          to="/"
           className="hidden sm:flex items-center gap-x-2 text-[#091F5B] text-xl"
         >
           <span>
@@ -179,7 +178,7 @@ const ProductDetails = () => {
           <span>Quay lại</span>
         </Link>
         <div className="flex flex-col sm:flex-row justify-end gap-y-2 sm:gap-x-5 w-full sm:w-fit">
-          <button className="flex items-center justify-center gap-x-2 border-[2px] border-solid border-[#091F5B] text-[#091F5B] py-3 px-6 rounded-md w-full sm:w-auto ">
+          <button className="flex items-center justify-center gap-x-2 border-[2px] border-solid border-[#091F5B] text-[#091F5B] py-3 px-6 rounded-md w-full sm:w-auto hover:bg-[#091F5B] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#091F5B]">
             <span>
               <FaShoppingCart />
             </span>
@@ -187,7 +186,7 @@ const ProductDetails = () => {
           </button>
           <button
             onClick={handleBuyProduct}
-            className="flex items-center justify-center gap-x-2 bg-[#091F5B] text-white py-3 px-6 rounded-md w-full sm:w-auto"
+            className="flex items-center justify-center gap-x-2 bg-[#091F5B] text-white py-3 px-6 rounded-md w-full sm:w-auto hover:bg-[#081F5C] focus:outline-none focus:ring-2 focus:ring-[#091F5B] hover:opacity-50"
           >
             <span>
               <FaMoneyBillAlt />

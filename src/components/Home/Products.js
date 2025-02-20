@@ -18,7 +18,7 @@ const Products = ({ data, handleAddProduct }) => {
 
   const handleRedirectProductDetailsPage = (id) => {
     const product = data.filter((product) => product.id === id);
-    navigate(`/details/${id}`, {
+    navigate(`/chitietsanpham/${id}`, {
       state: product,
     });
   };
@@ -72,7 +72,7 @@ const Products = ({ data, handleAddProduct }) => {
 
   return (
     <div className="flex flex-col sm:flex-row font-roboto">
-      <div className="w-full sm:w-1/5 p-4 sm:p-6 sm:pt-14 border-b sm:border-b-0 sm:border-r-[1px] border-r-gray-300 border-r-solid">
+      <div className="w-full sm:w-1/5 p-4 sm:p-6 sm:pt-10 border-b sm:border-b-0 sm:border-r-[1px] border-r-gray-300 border-r-solid">
         <h2 className="text-lg font-bold mb-4">Bộ lọc</h2>
 
         <div className="flex flex-col">
@@ -134,12 +134,12 @@ const Products = ({ data, handleAddProduct }) => {
         </div>
       </div>
       <div className="w-full sm:w-4/5">
-        <h1 className="text-[1.5rem] mx-auto px-6 pt-10 pb-6 text-left uppercase text-[#091F5B] font-bold sm:text-[2rem]">
+        <h1 className="text-[1.5rem] mx-auto px-6 pt-8 pb-6 text-left uppercase text-[#091F5B] font-bold sm:text-[2rem]">
           DANH SÁCH SẢN PHẨM
         </h1>
         <div className="w-full sm:w-[95%] h-fit mx-auto pt-2">
           {currentItems.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-0 sm:gap-y-6 gap-x-0 sm:gap-x-4 justify-items-start relative">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-0 sm:gap-y-4 gap-x-0 sm:gap-x-4 justify-items-start relative">
               {currentItems.map((data, i) => (
                 <div
                   className="relative p-2 pb-4 sm:pb-4 flex flex-col justify-between max-w-sm border border-gray-100 sm:border-gray-200 dark:bg-gray-800 dark:border-gray-700"
@@ -220,7 +220,7 @@ const Products = ({ data, handleAddProduct }) => {
           ) : (
             <h1 className="text-center text-xl">Sản phẩm đang được cập nhật</h1>
           )}
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-6">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}

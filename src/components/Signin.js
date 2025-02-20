@@ -105,6 +105,7 @@ const Signin = () => {
               Mật khẩu
             </label>
             <input
+              autoComplete="on"
               type={showPassword ? "text" : "password"}
               name="password"
               id="password"
@@ -140,6 +141,7 @@ const Signin = () => {
               Xác nhận mật khẩu
             </label>
             <input
+              autoComplete="on"
               type={showConfirmPassword ? "text" : "password"}
               name="confirmpassword"
               id="confirmpassword"
@@ -180,7 +182,7 @@ const Signin = () => {
       </div>
       <div className="h-screen sm:block hidden">
         <img
-          class="h-full object-top"
+          className="h-full object-top"
           src={fashionImg}
           alt="A model with her outfit"
         />

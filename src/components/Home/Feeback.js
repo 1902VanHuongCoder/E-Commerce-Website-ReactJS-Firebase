@@ -55,7 +55,7 @@ const Feeback = () => {
 
   return (
     <div className="w-full mt-5 sm:mt-0 sm:p-7 font-roboto">
-      <div className="w-full h-fit border-[rgba(0,0,0,.1)] border border-solid mx-auto p-5">
+      <div className="w-full h-fit border-[rgba(0,0,0,.1)] border border-solid mx-auto p-7">
         <div className="w-full flex justify-start items-center gap-x-2 sm:gap-x-3">
           <div className="w-10 h-10 hidden bg-slate-100 sm:flex justify-center items-center rounded-full text-2xl">
             <BiSolidUserCircle />

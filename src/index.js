@@ -13,8 +13,22 @@ root.render(
       <LoginProvider>
         <ToastProvider
           config={{
-            position: "top-right",
+            position: "top-left",
             duration: 3000,
+            toastBackgroundColor: (type) => {
+              switch (type) {
+                case "success":
+                  return "#28a745"; // Green
+                case "error":
+                  return "#dc3545"; // Red
+                case "warning":
+                  return "#ffc107"; // Yellow
+                case "info":
+                  return "#091F5B"; // Blue
+                default:
+                  return "#343a40"; // Dark
+              }
+            },
           }}
         >
           <App />
