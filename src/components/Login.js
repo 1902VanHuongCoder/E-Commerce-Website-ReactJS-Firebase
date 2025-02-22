@@ -1,18 +1,21 @@
 import React, { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase_setup/firebase";
+
+import { AppContext } from "../contextHelpers";
+
 import RingLoader from "react-spinners/RingLoader";
 import { useToast } from "rc-toastr";
-import { AppContext, LoginContext } from "../contextHelpers";
-import fashionImg from "../assets/loginimage.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+import fashionImg from "../assets/loginimage.png";
+
 const Login = () => {
+  const { updateUserData } = useContext(AppContext);
   // Contexts for managing global state
-  const { setAccount } = useContext(AppContext);
-  const { func } = useContext(LoginContext);
   const { toast } = useToast();
 
   // Local state for remembering user and loading state
@@ -56,17 +59,13 @@ const Login = () => {
       res[0]?.password === data.password
     ) {
       toast("Đăng nhập thành công");
-      if (remember) {
-        let accountJSON = JSON.stringify({
-          username: data.email,
-          password: data.password,
-          role: "user",
-        });
-        localStorage.setItem("loggedInAccount", accountJSON);
+      updateUserData(res[0]); // Update the global state with the user data
+      localStorage.setItem("loggedInAccount", data.email);
+      if (res[0].role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
       }
-      setAccount(res[0]);
-      func(true);
-      navigate("/");
     }
     setLoading(false);
   };
@@ -86,7 +85,7 @@ const Login = () => {
         />
       </div>
       <div className="absolute top-0 left-0 font-bodonimoda text-[#091F5B] font-bold text-3xl sm:text-6xl flex justify-center sm:items-center w-full sm:w-[500px] h-full -z-2">
-        <h1 className="sm:rotate-90 sm:-translate-x-14 h-fit w-full text-center pt-10">
+        <h1 className="sm:rotate-90 sm:-translate-x-14 h-fit w-full text-center pt-10 hidden sm:block">
           ANNBI STORE
         </h1>
       </div>
@@ -127,26 +126,28 @@ const Login = () => {
             >
               Mật khẩu
             </label>
-            <input
-              autoComplete="on"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="••••••••"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              {...register("password", {
-                required: "Trường này không được để trống",
-              })}
-            />
-            <div className="text-[red] py-1 text-xs mt-2">
-              {errors.password && errors.password.message}
+            <div className="relative">
+              <div
+                className="absolute right-0 h-full pr-3 flex items-center cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+              <input
+                autoComplete="on"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                placeholder="••••••••"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                {...register("password", {
+                  required: "Trường này không được để trống",
+                })}
+              />
             </div>
 
-            <div
-              className="absolute right-0 bottom-7 pr-3 flex items-center cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            <div className="text-[red] py-1 text-xs mt-2">
+              {errors.password && errors.password.message}
             </div>
           </div>
           <div className="flex items-center justify-between">

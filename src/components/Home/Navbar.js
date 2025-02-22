@@ -1,22 +1,22 @@
 import { useContext, useState } from "react";
-import { FaHome, FaHistory, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
-import { AppContext, LoginContext } from "../../contextHelpers";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from "../../contextHelpers";
 import { useToast } from "rc-toastr";
 
+import { FaHome, FaHistory, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import annbiLogo from "../../assets/annbiLogo.png";
 
 export default function NavbarWithDropdown() {
   const { toast } = useToast();
-  const { account, setAccount } = useContext(AppContext);
-  const { isLogin, func } = useContext(LoginContext);
+  const { user, logout, data } = useContext(AppContext);
+  const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   // Function to handle logout
   const handleLogOut = () => {
-    func(false);
-    setAccount({});
+    logout();
     toast("Đăng xuất thành công");
     localStorage.removeItem("loggedInAccount");
     window.location.reload(true);
@@ -27,15 +27,43 @@ export default function NavbarWithDropdown() {
     return location.pathname === path ? "text-[#364EB0] font-bold" : "";
   };
 
+  // Function to normalize Vietnamese characters
+  const normalizeString = (str) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
+  const handleSearch = () => {
+    const normalizedSearch = normalizeString(search);
+
+    if (normalizedSearch !== "") {
+      const resultFiltered = data.filter((product) =>
+        normalizeString(product.productName).includes(normalizedSearch)
+      );
+      navigate("/ketquatimkiem", {
+        state: {
+          products: resultFiltered,
+          queryContent: search,
+        },
+      });
+    } else {
+      console.log("No search query provided");
+    }
+  };
+
   return (
     <div className="relative">
       <div className="px-5 py-4 flex flex-col lg:flex-row justify-between items-center bg-[#fff] font-roboto">
         <div className="flex justify-between items-center w-full lg:w-auto">
-          <img
-            alt="annbi logo brand"
-            className="w-auto h-[30px] object-contain"
-            src={annbiLogo}
-          />
+          <Link to={"/"}>
+            <img
+              alt="annbi logo brand"
+              className="w-auto h-[30px] object-contain"
+              src={annbiLogo}
+            />
+          </Link>
           <div className="block lg:hidden">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -58,33 +86,38 @@ export default function NavbarWithDropdown() {
         <div className="w-full lg:w-auto mt-4 lg:mt-0 flex-grow lg:flex-grow-0">
           <div className="flex justify-center lg:justify-between items-center">
             <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
               className="w-[60%] lg:w-[400px] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#364EB0]"
             />
-            <button className="ml-2 px-4 py-2 bg-[#364EB0] text-white rounded-lg hover:bg-[#2c3e9a] focus:outline-none focus:ring-2 focus:ring-[#7097D2]">
+            <button
+              onClick={handleSearch}
+              className="ml-2 px-4 py-2 bg-[#364EB0] text-white rounded-lg hover:bg-[#2c3e9a] focus:outline-none focus:ring-2 focus:ring-[#7097D2]"
+            >
               Tìm kiếm
             </button>
           </div>
         </div>
         <ul className="hidden lg:flex items-center mt-4 lg:mt-0">
-          <Link to={"/"}>
+          <Link to={user?.role === "admin" ? "/admin" : "/"}>
             <li className={`inline-block mx-3 uppercase ${isActive("/")}`}>
               Trang chủ
             </li>
           </Link>
-          {isLogin && (
+          {user && (
             <Link to={"/lichsumuahang"}>
               <li
                 className={`inline-block mx-3 uppercase ${isActive(
-                  "/orderhistory"
+                  "/lichsumuahang"
                 )}`}
               >
                 Lịch sử
               </li>
             </Link>
           )}
-          {isLogin ? (
+          {user ? (
             <li
               onClick={handleLogOut}
               className="inline-block mx-3 uppercase cursor-pointer"
@@ -102,10 +135,10 @@ export default function NavbarWithDropdown() {
               </li>
             </Link>
           )}
-          {isLogin && (
+          {user && (
             <li className="inline-block mx-3 font-bold">
               <div className="w-8 h-8 rounded-full bg-[#354EB0] flex items-center justify-center text-white">
-                {account.username.charAt(0).toUpperCase()}
+                {user.username.charAt(0).toUpperCase()}
               </div>
             </li>
           )}
@@ -118,18 +151,18 @@ export default function NavbarWithDropdown() {
         onClick={() => setIsSidebarOpen(false)}
       >
         <div
-          className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+          className={`fixed inset-y-0 left-0 w-80 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="px-5 py-4 flex justify-between items-center bg-[#fff] font-roboto">
-            <div>
+          <div className="px-5 py-4 flex justify-between items-center bg-[#fff] font-roboto border-b-[1px] border-gray-200">
+            <Link to={"/"}>
               <img
                 alt="annbi logo brand"
                 className="w-auto h-[30px] object-contain"
                 src={annbiLogo}
               />
-            </div>
+            </Link>
             <button
               onClick={() => setIsSidebarOpen(false)}
               className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700"
@@ -147,7 +180,7 @@ export default function NavbarWithDropdown() {
               </svg>
             </button>
           </div>
-          <ul className="mt-5">
+          <ul className="mt-5 px-2 flex flex-col justify-start gap-y-2">
             <Link to={"/"}>
               <li
                 className={`block px-4 py-2 text-lg uppercase ${isActive("/")}`}
@@ -157,11 +190,11 @@ export default function NavbarWithDropdown() {
                 Trang chủ
               </li>
             </Link>
-            {isLogin && (
-              <Link to={"/orderhistory"}>
+            {user && (
+              <Link to={"/lichsumuahang"}>
                 <li
                   className={`block px-4 py-2 text-lg uppercase ${isActive(
-                    "/orderhistory"
+                    "/lichsumuahang"
                   )}`}
                   onClick={() => setIsSidebarOpen(false)}
                 >
@@ -170,7 +203,7 @@ export default function NavbarWithDropdown() {
                 </li>
               </Link>
             )}
-            {isLogin ? (
+            {user ? (
               <li
                 onClick={() => {
                   handleLogOut();
@@ -194,14 +227,17 @@ export default function NavbarWithDropdown() {
                 </li>
               </Link>
             )}
-            {isLogin && (
-              <li className="block px-4 py-2 text-lg font-bold">
-                <div className="w-8 h-8 rounded-full bg-[#354EB0] flex items-center justify-center text-white">
-                  {account.username.charAt(0).toUpperCase()}
-                </div>
-              </li>
-            )}
           </ul>
+          <div className="absolute bottom-0 w-full border-t-[1px] border-gray-200">
+            {user && (
+              <div className="flex items-center gap-x-2 px-4 py-2 text-lg font-bold">
+                <div className="w-8 h-8 rounded-full bg-[#354EB0] flex items-center justify-center text-white">
+                  {user.username.charAt(0).toUpperCase()}
+                </div>
+                <div>{user.username}</div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

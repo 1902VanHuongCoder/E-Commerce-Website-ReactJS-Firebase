@@ -10,6 +10,7 @@ import SearchResult from "./components/SearchResult";
 import ProductDetails from "./components/ProductDetails";
 import Login from "./components/Login";
 import Signin from "./components/Signin";
+// import { ShoppingCart } from "./helpers";
 function App() {
   return (
     <BrowserRouter>
@@ -23,11 +24,12 @@ function App() {
         ></Route>
         <Route path="/dathang/:productId" element={<Order />}></Route>
         <Route path="/lichsumuahang" element={<OrderHistory />}></Route>
+        <Route path="/ketquatimkiem" element={<SearchResult />}></Route>
+        {/* <Route path="/giohang" element={<ShoppingCart />}></Route> */}
 
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/login" element={<AdminLogin />}></Route>
         <Route path="/admin/signin" element={<AdminSigninForm />}></Route>
-        <Route path="/searchresult" element={<SearchResult />}></Route>
 
         <Route path="/error" element={<Error />} />
         <Route path="*" element={<Navigate to="/error" />} />

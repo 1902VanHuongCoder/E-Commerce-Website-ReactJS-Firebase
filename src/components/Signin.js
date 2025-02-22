@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { db } from "../firebase_setup/firebase";
-import { useToast } from "rc-toastr";
-import RingLoader from "react-spinners/RingLoader";
 import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
-import fashionImg from "../assets/portrait-young-beautiful-hipster-bad-girl-black-leather-jacket-earring-her-nose-sexy-carefree-smiling-woman-sitting-studio-pink-wig-near-blue-wall-confident-model-sunglasses-Photoroom.png";
+import RingLoader from "react-spinners/RingLoader";
+import { useToast } from "rc-toastr";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import fashionImg from "../assets/portrait-young-beautiful-hipster-bad-girl-black-leather-jacket-earring-her-nose-sexy-carefree-smiling-woman-sitting-studio-pink-wig-near-blue-wall-confident-model-sunglasses-Photoroom.png";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ const Signin = () => {
   return (
     <div className="font-roboto relative max-w-screen h-screen flex justify-center items-center bg-[#F8FBFF]">
       <div className="absolute top-0 right-0 font-bodonimoda text-[#091F5B] font-bold text-3xl sm:text-6xl flex justify-center sm:items-center w-full sm:w-[500px] h-full -z-2">
-        <h1 className="sm:rotate-90 sm:translate-x-[120px] h-fit w-full text-center pt-10">
+        <h1 className="sm:rotate-90 sm:translate-x-[120px] h-fit w-full text-center pt-10 hidden sm:block">
           ANNBI STORE
         </h1>
       </div>
@@ -97,41 +97,44 @@ const Signin = () => {
               {errors.email && errors.email.message}
             </span>
           </div>
-          <div className="relative">
+          <div className="relative ">
             <label
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Mật khẩu
             </label>
-            <input
-              autoComplete="on"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="••••••••"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              {...register("password", {
-                required: "Trường này không được để trống",
-                maxLength: {
-                  value: 15,
-                  message: "Mật khẩu phải lớn hơn 15 ký tự!",
-                },
-                minLength: {
-                  value: 8,
-                  message: "Mật khẩu phải lớn hơn 8 ký tự!",
-                },
-              })}
-            />
+            <div className="relative">
+              <div
+                className="absolute right-0 h-full pr-3 flex items-center cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+              <input
+                autoComplete="on"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                placeholder="••••••••"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                {...register("password", {
+                  required: "Trường này không được để trống",
+                  maxLength: {
+                    value: 15,
+                    message: "Mật khẩu phải lớn hơn 15 ký tự!",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Mật khẩu phải lớn hơn 8 ký tự!",
+                  },
+                })}
+              />
+            </div>
+
             <span className="text-[red] py-1 text-xs mt-2">
               {errors.password && errors.password.message}
             </span>
-            <div
-              className="absolute right-0 bottom-3 pr-3 flex items-center cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </div>
           </div>
           <div className="relative">
             <label
@@ -140,26 +143,29 @@ const Signin = () => {
             >
               Xác nhận mật khẩu
             </label>
-            <input
-              autoComplete="on"
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmpassword"
-              id="confirmpassword"
-              placeholder="••••••••"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              {...register("confirmpassword", {
-                required: "Trường này không được để trống",
-              })}
-            />
+            <div className="relative ">
+              <div
+                className="absolute right-0 h-full pr-3 flex items-center cursor-pointer"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+              <input
+                autoComplete="on"
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmpassword"
+                id="confirmpassword"
+                placeholder="••••••••"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                {...register("confirmpassword", {
+                  required: "Trường này không được để trống",
+                })}
+              />
+            </div>
+
             <span className="text-[red] py-1 text-xs mt-2">
               {errors.confirmpassword && errors.confirmpassword.message}
             </span>
-            <div
-              className="absolute right-0 bottom-3 pr-3 flex items-center cursor-pointer"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-            </div>
           </div>
           <button
             onClick={handleSubmit(handleSignin)}

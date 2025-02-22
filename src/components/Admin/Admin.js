@@ -11,11 +11,11 @@ import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import Loading from "../Loading";
 import AdminFeedback from "./AdminFeedback";
 import NavbarWithDropdown from "../Home/Navbar";
-import { LoginContext } from "../Context/LoginContext";
 import { Link } from "react-router-dom";
 import cuteRobot from "../../assets/cuteRobot.jpg";
+import { AppContext } from "../Context/AppContext";
 const Admin = () => {
-  const { isLogin } = useContext(LoginContext);
+  const { user } = useContext(AppContext);
   const [data, setData] = useState(); // retrieve datas from firebase
   const [edit, setEdit] = useState(false); // toggle editing product modal
   const [productId, setProductId] = useState(); // write ID of product
@@ -142,7 +142,7 @@ const Admin = () => {
         <h1 className="w-full text-center uppercase font-medium text-xl py-5 text-[#ee4d2d]">
           Admin Dashboard
         </h1>
-        {isLogin ? (
+        {user ? (
           <div className="w-full lg:w-[80%] lg:mx-auto bg-white rounded-lg sm:p-3 shadow-lg">
             <h2 className="font-medium py-5 px-5"># All products</h2>
 
@@ -238,10 +238,17 @@ const Admin = () => {
         ) : (
           <div className="w-11/12 h-[350px] p-5 bg-[#67e9ff] grid grid-cols-3 justify-center items-center mx-auto rounded-xl">
             <div className="flex flex-col justify-center items-center col-span-2">
-              <p className="uppercase text-[18px] text-[#299ae0] font-bold">Log in with Admin role</p>
-              <h1 className="uppercase text-[26px] text-white font-medium">You can check out product informations</h1>
-              <Link to="/login" className="bg-[#299ae0] font-bold text-white py-2 px-4 rounded-sm hover:opacity-80 ">
-                <button >Log in</button>
+              <p className="uppercase text-[18px] text-[#299ae0] font-bold">
+                Log in with Admin role
+              </p>
+              <h1 className="uppercase text-[26px] text-white font-medium">
+                You can check out product informations
+              </h1>
+              <Link
+                to="/login"
+                className="bg-[#299ae0] font-bold text-white py-2 px-4 rounded-sm hover:opacity-80 "
+              >
+                <button>Log in</button>
               </Link>
             </div>
             <div className="flex justify-center items-center">

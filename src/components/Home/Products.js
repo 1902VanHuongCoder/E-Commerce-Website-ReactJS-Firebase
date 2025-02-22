@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaTshirt,
@@ -8,14 +8,17 @@ import {
   FaShoppingCart,
   FaHeart,
 } from "react-icons/fa";
+import { AppContext } from "../Context/AppContext";
 
-const Products = ({ data, handleAddProduct }) => {
+const Products = () => {
+  const { addToShoppingCart, data } = useContext(AppContext);
   const navigate = useNavigate();
   const [filter, setFilter] = useState("all");
   const [lovedProducts, setLovedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
+  // Function to handle redirecting to the product details page
   const handleRedirectProductDetailsPage = (id) => {
     const product = data.filter((product) => product.id === id);
     navigate(`/chitietsanpham/${id}`, {
@@ -23,6 +26,7 @@ const Products = ({ data, handleAddProduct }) => {
     });
   };
 
+  // Function to toggle loved products
   const handleToggleLovedProduct = (id) => {
     setLovedProducts((prevLovedProducts) =>
       prevLovedProducts.includes(id)
@@ -31,12 +35,14 @@ const Products = ({ data, handleAddProduct }) => {
     );
   };
 
+  // Filter products based on the selected filter
   const filteredData = data.filter((product) => {
     if (filter === "all") return true;
     if (filter === "loved") return lovedProducts.includes(product.id);
     return product.productType === filter;
   });
 
+  // Calculate pagination details
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredData.slice(
@@ -44,6 +50,7 @@ const Products = ({ data, handleAddProduct }) => {
     startIndex + itemsPerPage
   );
 
+  // Render pagination buttons
   const renderPaginationButtons = () => {
     const maxButtons = 5; // Maximum number of pagination buttons to display
     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
@@ -59,7 +66,7 @@ const Products = ({ data, handleAddProduct }) => {
         <button
           key={i}
           onClick={() => setCurrentPage(i)}
-          className={`px-4 py-2 mx-1 ${
+          className={`px-3 sm:px-4 py-2 mx-1 ${
             currentPage === i ? "bg-blue-500 text-white" : "bg-gray-300"
           } rounded`}
         >
@@ -72,6 +79,7 @@ const Products = ({ data, handleAddProduct }) => {
 
   return (
     <div className="flex flex-col sm:flex-row font-roboto">
+      {/* Sidebar for filters */}
       <div className="w-full sm:w-1/5 p-4 sm:p-6 sm:pt-10 border-b sm:border-b-0 sm:border-r-[1px] border-r-gray-300 border-r-solid">
         <h2 className="text-lg font-bold mb-4">Bộ lọc</h2>
 
@@ -133,6 +141,7 @@ const Products = ({ data, handleAddProduct }) => {
           </button>
         </div>
       </div>
+      {/* Main content for displaying products */}
       <div className="w-full sm:w-4/5">
         <h1 className="text-[1.5rem] mx-auto px-6 pt-8 pb-6 text-left uppercase text-[#091F5B] font-bold sm:text-[2rem]">
           DANH SÁCH SẢN PHẨM
@@ -150,8 +159,8 @@ const Products = ({ data, handleAddProduct }) => {
                       <div
                         className={`absolute w-full h-full ${
                           i % 2 === 0
-                            ? "-translate-x-full"
-                            : "-translate-y-full"
+                            ? "-translate-x-[110%]"
+                            : "-translate-y-[110%]"
                         }
                     ${
                       i % 2 === 0
@@ -190,11 +199,11 @@ const Products = ({ data, handleAddProduct }) => {
 
                   <div className="flex justify-between items-center gap-x-2">
                     <button
-                      onClick={() => handleAddProduct(data.id)}
+                      onClick={() => addToShoppingCart(data)}
                       className="flex justify-center items-center px-3 py-2 text-sm font-medium text-center text-white hover:opacity-50 focus:outline-none bg-[#091F5B] w-full rounded-lg"
                     >
-                      <span className="hidden sm:block">Thêm vào giỏ hàng</span>
-                      <span className="block sm:hidden">Thêm </span>
+                      <span className="hidden sm:block">Mua ngay</span>
+                      <span className="block sm:hidden">Mua </span>
                       <FaShoppingCart className="w-3.5 h-3.5 ml-2" />
                     </button>
                     <div
@@ -220,11 +229,11 @@ const Products = ({ data, handleAddProduct }) => {
           ) : (
             <h1 className="text-center text-xl">Sản phẩm đang được cập nhật</h1>
           )}
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-5 sm:mt-12">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="px-4 py-2 mx-1 bg-gray-300 rounded disabled:opacity-50"
+              className="px-2 sm:px-4 py-2 mx-2 bg-gray-300 rounded disabled:opacity-50"
             >
               Trước
             </button>
@@ -234,7 +243,7 @@ const Products = ({ data, handleAddProduct }) => {
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="px-4 py-2 mx-1 bg-gray-300 rounded disabled:opacity-50"
+              className="px-2 sm:px-4 py-2 mx-2 bg-gray-300 rounded disabled:opacity-50"
             >
               Sau
             </button>

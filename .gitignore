@@ -24,3 +24,6 @@ yarn-error.log*
 
 #firestore api key
 ./env
+
+# Local Netlify folder
+.netlify

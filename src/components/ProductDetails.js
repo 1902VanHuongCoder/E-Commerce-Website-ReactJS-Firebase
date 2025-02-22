@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import { NavbarWithDropdown } from "../helpers";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { LoginContext } from "../contextHelpers";
-import { useToast } from "rc-toastr";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase_setup/firebase"; // Import your Firebase setup
 import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
+import { AppContext } from "../contextHelpers";
+import { NavbarWithDropdown } from "../helpers";
+import { useToast } from "rc-toastr";
 import { FaMoneyBillAlt, FaShoppingCart } from "react-icons/fa";
 import { FaArrowLeftLong } from "react-icons/fa6";
 
 const ProductDetails = () => {
-  const { isLogin } = useContext(LoginContext);
+  const { user } = useContext(AppContext);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { productId } = useParams(); // Get product ID from URL parameters
@@ -17,6 +17,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch product details from Firestore
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -42,12 +43,12 @@ const ProductDetails = () => {
     }
   }, [productId]);
 
+  // Handle buy product action
   const handleBuyProduct = () => {
-    if (isLogin) {
+    if (user) {
       navigate(`/dathang/${productId}`, { state: product });
     } else {
       toast("Hãy đăng nhập để mua hàng!");
-      return;
     }
   };
 
@@ -82,42 +83,18 @@ const ProductDetails = () => {
           </h1>
           <div className="flex flex-wrap gap-x-3 pb-3">
             <div className="flex items-center">
-              <svg
-                className="w-4 h-4 text-yellow-300 mr-1"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 22 20"
-              >
-                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-              </svg>
-              <svg
-                className="w-4 h-4 text-yellow-300 mr-1"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 22 20"
-              >
-                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-              </svg>
-              <svg
-                className="w-4 h-4 text-yellow-300 mr-1"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 22 20"
-              >
-                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-              </svg>
-              <svg
-                className="w-4 h-4 text-yellow-300 mr-1"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 22 20"
-              >
-                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-              </svg>
+              {[...Array(4)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="w-4 h-4 text-yellow-300 mr-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 20"
+                >
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                </svg>
+              ))}
               <svg
                 className="w-4 h-4 text-gray-300 mr-1 dark:text-gray-500"
                 aria-hidden="true"
@@ -143,26 +120,22 @@ const ProductDetails = () => {
           <div>
             <p className="font-bold">Các phiên bản màu</p>
             <div className="my-3 flex flex-wrap gap-2">
-              {product?.productColors.map((color, i) => {
-                return (
-                  <span
-                    key={i}
-                    className="px-2 py-1 text-sm rounded-sm border border-solid border-[rgba(0,0,0,.8)]"
-                  >
-                    {color}
-                  </span>
-                );
-              })}
+              {product?.productColors.map((color, i) => (
+                <span
+                  key={i}
+                  className="px-2 py-1 text-sm rounded-sm border border-solid border-[rgba(0,0,0,.8)]"
+                >
+                  {color}
+                </span>
+              ))}
             </div>
           </div>
           <div className="mt-[25px]">
             <p className="font-bold">Chi tiết sản phẩm</p>
-            <div
-              className={`px-4 pt-2 relative text-sm text-justify duration-100 transition-all`}
-            >
-              {product?.details.map((item, i) => {
-                return <li key={i}>{item}</li>;
-              })}
+            <div className="px-4 pt-2 relative text-sm text-justify duration-100 transition-all">
+              {product?.details.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
             </div>
           </div>
         </div>

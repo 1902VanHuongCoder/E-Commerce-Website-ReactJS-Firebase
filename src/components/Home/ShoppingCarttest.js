@@ -4,19 +4,15 @@ import { FaShoppingBag } from "react-icons/fa";
 import { BsFillEmojiLaughingFill } from "react-icons/bs";
 import { AiFillBell } from "react-icons/ai";
 import { useToast } from "rc-toastr";
-import { LoginContext } from "../Context/LoginContext";
+import { AppContext } from "../Context/AppContext";
 
-const ShoppingCart = ({
-  products,
-  handleRemoveProductOutOfShoppingCart,
-}) => {
+const ShoppingCart = ({ products, handleRemoveProductOutOfShoppingCart }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const {isLogin} = useContext(LoginContext);
+  const { user } = useContext(AppContext);
   const [showShoppingCart, setShowShoppingCart] = useState(false);
   const handleBuyProduct = (id) => {
-    console.log(isLogin);
-    if (!isLogin) {
+    if (!user) {
       toast("Log in please!");
       return;
     } else {

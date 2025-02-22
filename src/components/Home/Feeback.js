@@ -2,27 +2,25 @@ import React, { useContext, useState, useEffect } from "react";
 import { db } from "../../firebase_setup/firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { useToast } from "rc-toastr";
-import { AppContext, LoginContext } from "../../contextHelpers";
-
+import { AppContext } from "../../contextHelpers";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { IoIosPricetags } from "react-icons/io";
 import logo from "../../assets/annbiLogo.png";
 
 const Feeback = () => {
-  const { account } = useContext(AppContext); // Get account information from AppContext
-  const { isLogin } = useContext(LoginContext); // Get login status from LoginContext
+  const { user } = useContext(AppContext); // Get account information from AppContext
   const { toast } = useToast(); // Get toast function for notifications
   const [feedback, setFeedback] = useState(""); // State to store user feedback input
   const [feedbacksWereResponsed, setFeedbacksWereResponsed] = useState([]); // State to store feedbacks that were responded
 
   // Function to handle sending feedback
   const handleSendFeedback = async () => {
-    if (isLogin) {
+    if (user) {
       if (feedback !== "") {
         // Add feedback to Firestore
         await addDoc(collection(db, "feedbacks"), {
           content: feedback,
-          user: account.username,
+          user: user.username,
           response: null,
           date: new Date().toDateString(),
           public: false,
@@ -38,25 +36,25 @@ const Feeback = () => {
   };
 
   // Function to fetch feedbacks from Firestore
-  const addData = async () => {
-    await getDocs(collection(db, "feedbacks")).then((response) => {
-      const responsedData = response.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setFeedbacksWereResponsed(responsedData); // Set feedbacks state
-    });
+  const fetchData = async () => {
+    const response = await getDocs(collection(db, "feedbacks"));
+    const responsedData = response.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setFeedbacksWereResponsed(responsedData); // Set feedbacks state
   };
 
   // Fetch feedbacks when component mounts
   useEffect(() => {
-    addData();
+    fetchData();
   }, []);
 
   return (
-    <div className="w-full mt-5 sm:mt-0 sm:p-7 font-roboto">
-      <div className="w-full h-fit border-[rgba(0,0,0,.1)] border border-solid mx-auto p-7">
-        <div className="w-full flex justify-start items-center gap-x-2 sm:gap-x-3">
+    <div className="w-full mt-5 sm:mt-10 sm:p-7 font-roboto">
+      <div className="w-full h-fit border-[rgba(0,0,0,.1)] border border-solid mx-auto p-2 pt-7 sm:p-7">
+        {/* Input for feedback */}
+        <div className="w-full flex flex-col sm:flex-row justify-start items-center gap-2 sm:gap-3">
           <div className="w-10 h-10 hidden bg-slate-100 sm:flex justify-center items-center rounded-full text-2xl">
             <BiSolidUserCircle />
           </div>
@@ -64,19 +62,21 @@ const Feeback = () => {
             value={feedback}
             type="text"
             id="feedback"
-            className="rounded-lg h-10"
+            className="rounded-lg h-10 w-full sm:w-[50%]"
             placeholder="Bình luận ..."
             onChange={(e) => setFeedback(e.target.value)} // Update feedback state on input change
           />
           <button
             onClick={handleSendFeedback} // Handle send feedback on button click
-            className="h-10 px-5 bg-[#364EB0] text-white rounded-lg hover:opacity-80"
+            className="h-10 px-5 bg-[#364EB0] text-white rounded-lg hover:opacity-80 w-full sm:w-fit"
           >
             Gửi phản hồi
           </button>
         </div>
+
+        {/* Display feedbacks */}
         <div>
-          <p className="py-5 flex items-center gap-x-2 text-lg sm:mt-5">
+          <p className="pt-5 flex items-center gap-x-2 text-lg sm:mt-5">
             <span>
               <IoIosPricetags />
             </span>{" "}
@@ -86,7 +86,7 @@ const Feeback = () => {
             if (item.public) {
               return (
                 <div
-                  className="w-full bg-[#E9F2FF] h-fit p-2 py-5 sm:p-5 relative"
+                  className="w-full bg-white h-fit p-2 py-5 sm:p-5 relative"
                   key={index}
                 >
                   <div className="absolute w-[30px] sm:w-[20px] h-[120px] sm:h-[104px] left-[1.4rem] sm:left-[2.1rem] top-[2.5rem] sm:top-[3.3rem] border-l-2 border-l-[#dfdfdf] border-b-[#dfdfdf] border-b-2 -z-5"></div>
@@ -118,6 +118,7 @@ const Feeback = () => {
                 </div>
               );
             }
+            return null;
           })}
         </div>
       </div>
