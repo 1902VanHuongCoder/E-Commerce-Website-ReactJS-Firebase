@@ -32,6 +32,8 @@ const AppProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  console.log(user);
+
   return (
     <AppContext.Provider
       value={{

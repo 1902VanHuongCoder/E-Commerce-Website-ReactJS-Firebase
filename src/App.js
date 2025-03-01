@@ -1,7 +1,6 @@
 import Home from "./components/Home";
 import Order from "./components/Order";
 import Error from "./components/Error";
-import Admin from "./components/Admin/Admin";
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminSigninForm from "./components/Admin/AdminSignin";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -10,7 +9,8 @@ import SearchResult from "./components/SearchResult";
 import ProductDetails from "./components/ProductDetails";
 import Login from "./components/Login";
 import Signin from "./components/Signin";
-// import { ShoppingCart } from "./helpers";
+import Dashboard from "./components/Admin/Dashboard";
+
 function App() {
   return (
     <BrowserRouter>
@@ -22,12 +22,12 @@ function App() {
           path="/chitietsanpham/:productId"
           element={<ProductDetails />}
         ></Route>
-        <Route path="/dathang/:productId" element={<Order />}></Route>
-        <Route path="/lichsumuahang" element={<OrderHistory />}></Route>
+        <Route path="/lichsumuahang" element={<Order />}></Route>
+        <Route path="/dathang/:productId" element={<OrderHistory />}></Route>
         <Route path="/ketquatimkiem" element={<SearchResult />}></Route>
         {/* <Route path="/giohang" element={<ShoppingCart />}></Route> */}
 
-        <Route path="/admin" element={<Admin />}></Route>
+        <Route path="/admin" element={<Dashboard />}></Route>
         <Route path="/admin/login" element={<AdminLogin />}></Route>
         <Route path="/admin/signin" element={<AdminSigninForm />}></Route>
 
