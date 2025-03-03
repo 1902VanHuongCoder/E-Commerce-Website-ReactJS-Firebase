@@ -22,7 +22,7 @@ export default function NavBar() {
     logout();
     toast("Đăng xuất thành công");
     localStorage.removeItem("loggedInAccount");
-    window.location.reload(true);
+    navigate("/dangnhap");
   };
 
   // Function to check if the current path matches the given path

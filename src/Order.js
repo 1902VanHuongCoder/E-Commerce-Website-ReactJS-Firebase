@@ -234,12 +234,12 @@ const Order = () => {
                 <p className="text-2xl sm:text-4xl">${totalAmount}</p>
               </div>
               <div className="sm:w-2/5 flex gap-x-2 w-full items-center justify-between">
-                <button className="sm:hidden w-1/2 flex items-center gap-x-2 border-[2px] border-solid border-[#091F5B] py-1.5 px-4 rounded-md">
+                <button className="sm:hidden py-2.5 px-4 flex items-center gap-x-2 border-[2px] border-solid border-[#091F5B] rounded-md">
                   <span>
                     {" "}
                     <FaArrowLeftLong />
                   </span>
-                  <span>Quay lại</span>
+                  <span className="sm:block hidden">Quay lại</span>
                 </button>
                 <button
                   onClick={order}
