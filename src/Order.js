@@ -234,7 +234,10 @@ const Order = () => {
                 <p className="text-2xl sm:text-4xl">${totalAmount}</p>
               </div>
               <div className="sm:w-2/5 flex gap-x-2 w-full items-center justify-between">
-                <button className="sm:hidden py-2.5 px-4 flex items-center gap-x-2 border-[2px] border-solid border-[#091F5B] rounded-md">
+                <button
+                  onClick={() => navigate(-1)}
+                  className="sm:hidden py-2.5 px-4 flex items-center gap-x-2 border-[2px] border-solid border-[#091F5B] rounded-md"
+                >
                   <span>
                     {" "}
                     <FaArrowLeftLong />
