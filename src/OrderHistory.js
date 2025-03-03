@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../firebase_setup/firebase";
+import { db } from "./firebase_setup/firebase";
 import { AppContext } from "./Context/AppContext";
-import { NavbarWithDropdown, Loading, Footer } from "../helpers";
-import { FaArrowLeftLong, FaBagShopping } from "react-icons/fa6";
-import { FcShipped } from "react-icons/fc";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { BsFillBox2Fill } from "react-icons/bs";
-import orderBackgroundVector from "../assets/OrderBackground.png";
+import { Loading, Footer, NavBar } from "./helpers";
+import orderBackgroundVector from "./assets/OrderBackground.png";
+import { FaArrowLeftLong, FaBagShopping, FaBox } from "react-icons/fa6";
+import { FaBoxOpen } from "react-icons/fa";
+import { MdLocalShipping } from "react-icons/md";
+import { FaCheckCircle } from "react-icons/fa";
 
 const OrderHistory = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const OrderHistory = () => {
         <Loading />
       ) : (
         <div className="w-full min-h-full font-roboto">
-          <NavbarWithDropdown />
+          <NavBar />
           <div className="relative w-full mx-auto rounded large px-4 sm:px-20">
             <div className="absolute top-0 left-0 blur-lg w-full h-full -z-2"></div>
             <button
@@ -134,31 +134,27 @@ const OrderHistory = () => {
                         <h2 className="font-normal py-2 px-2 sm:px-5">
                           # Trạng thái đơn hàng
                         </h2>
-                        <ol className="items-center sm:flex sm:flex-wrap px-4 gap-y-4">
+                        <ol className="items-center sm:flex sm:flex-wrap px-4 py-4 gap-4 gap-x-6 space-y-4 sm:space-y-0">
                           {order.deliveryState.map((state, i) => (
-                            <li className="relative mb-6 sm:mb-0" key={i}>
-                              <div className="flex items-center">
-                                <div className="z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
-                                  {i === 0 && <BsFillBox2Fill />}
-                                  {i > 0 && state.state !== "Delivered" && (
-                                    <FcShipped />
-                                  )}
-                                  {state.state === "Delivered" && (
-                                    <AiOutlineCheckCircle className="text-green-400" />
-                                  )}
-                                </div>
-                                {i + 1 !== order.deliveryState.length && (
-                                  <div className="hidden sm:flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"></div>
+                            <li className="flex flex-col gap-y-2" key={i}>
+                              <span className="flex items-center gap-x-2 w-full">
+                                <span className="p-3 rounded-full bg-gray-300 flex justify-center items-center text-sm">
+                                  {parseInt(state.stateCode) === 0 && (
+                                    <FaBoxOpen />
+                                  )}{" "}
+                                  {parseInt(state.stateCode) === 1 && <FaBox />}{" "}
+                                  {parseInt(state.stateCode) === 2 && (
+                                    <MdLocalShipping />
+                                  )}{" "}
+                                  {parseInt(state.stateCode) === 3 && (
+                                    <FaCheckCircle />
+                                  )}{" "}
+                                </span>
+                                {parseInt(state.stateCode) !== 3 && (
+                                  <span className="h-[2px] w-full bg-gray-200 rounded-md"></span>
                                 )}
-                              </div>
-                              <div className="mt-3 sm:pr-8">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                  {state.state}
-                                </h3>
-                                <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                                  Được cập nhật vào {state.date}
-                                </time>
-                              </div>
+                              </span>
+                              <span>{state.stateMessage}</span>
                             </li>
                           ))}
                         </ol>

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { db } from "../firebase_setup/firebase";
+
+import { db } from "./firebase_setup/firebase";
 import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
+
 import RingLoader from "react-spinners/RingLoader";
 import { useToast } from "rc-toastr";
+
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import fashionImg from "../assets/portrait-young-beautiful-hipster-bad-girl-black-leather-jacket-earring-her-nose-sexy-carefree-smiling-woman-sitting-studio-pink-wig-near-blue-wall-confident-model-sunglasses-Photoroom.png";
+
+import fashionImg from "./assets/portrait-young-beautiful-hipster-bad-girl-black-leather-jacket-earring-her-nose-sexy-carefree-smiling-woman-sitting-studio-pink-wig-near-blue-wall-confident-model-sunglasses-Photoroom.png";
 
 const Signin = () => {
   const navigate = useNavigate();

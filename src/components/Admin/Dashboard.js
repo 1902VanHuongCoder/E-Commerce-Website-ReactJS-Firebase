@@ -1,36 +1,34 @@
 import React, { useContext, useState } from "react";
-import ProductList from "./ProductList";
 import OrderList from "./OrderList";
-import EditProduct from "./EditProduct";
 import CommentsList from "./CommentsList";
 import adminAvatar from "../../assets/adminAvatar.png";
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "../../Context/AppContext";
 import { useToast } from "rc-toastr";
-import {
-  BiLogOut,
-  BiListUl,
-  BiEdit,
-  BiCommentDetail,
-  BiCart,
-} from "react-icons/bi";
+import { BiLogOut, BiListUl, BiCommentDetail, BiCart } from "react-icons/bi";
+import Product from "./Product";
+import AddProduct from "./AddProduct";
+import { FiPlusCircle } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("products");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useContext(AppContext);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const renderContent = () => {
     switch (activeTab) {
       case "products":
-        return <ProductList />;
+        return <Product changeActiveTab={() => setActiveTab("addproduct")} />;
       case "orders":
         return <OrderList />;
-      case "edit":
-        return <EditProduct />;
       case "comments":
         return <CommentsList />;
+      case "addproduct":
+        return <AddProduct />;
       default:
-        return <ProductList />;
+        return <Product />;
     }
   };
 
@@ -39,12 +37,46 @@ const Dashboard = () => {
     logout();
     toast("Đăng xuất thành công");
     localStorage.removeItem("loggedInAccount");
-    window.location.reload(true);
+    navigate("/dangnhap");
   };
 
   return (
-    <div className="w-full relative">
-      <div className="w-[20%] fixed left-0 top-0 bg-[#081F5C] text-white h-screen">
+    <div className="w-full relative font-roboto ">
+      <div className="w-full h-16 bg-[#081F5C]  flex  sm:hidden items-center justify-between px-4 text-white">
+        <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
+          <img
+            src={adminAvatar}
+            alt="Admin Avatar"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
+          <svg
+            className="h-8 w-8"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity ${
+          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        } md:hidden`}
+        onClick={() => setSidebarOpen(false)}
+      ></div>
+
+      <div
+        className={`fixed left-0 top-0 bg-[#081F5C] text-white h-screen w-[80%] max-w-xs z-30 transform transition-transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:w-[20%] md:max-w-none`}
+      >
         <div className="flex items-center flex-col p-4 border-b-[1px] border-b-solid border-b-[rgba(255,255,255,0.1)]">
           <img
             src={adminAvatar}
@@ -59,7 +91,10 @@ const Dashboard = () => {
             className={`p-2 cursor-pointer flex items-center gap-x-2 ${
               activeTab === "products" ? "bg-[#334AEC]" : ""
             }`}
-            onClick={() => setActiveTab("products")}
+            onClick={() => {
+              setActiveTab("products");
+              setSidebarOpen(false);
+            }}
           >
             <BiListUl />
             Danh sách sản phẩm
@@ -68,28 +103,37 @@ const Dashboard = () => {
             className={`p-2 cursor-pointer flex items-center gap-x-2 ${
               activeTab === "orders" ? "bg-[#334AEC]" : ""
             }`}
-            onClick={() => setActiveTab("orders")}
+            onClick={() => {
+              setActiveTab("orders");
+              setSidebarOpen(false);
+            }}
           >
             <BiCart />
             Đơn hàng
           </li>
           <li
             className={`p-2 cursor-pointer flex items-center gap-x-2 ${
-              activeTab === "edit" ? "bg-[#334AEC]" : ""
-            }`}
-            onClick={() => setActiveTab("edit")}
-          >
-            <BiEdit />
-            Cập nhật sản phẩm
-          </li>
-          <li
-            className={`p-2 cursor-pointer flex items-center gap-x-2 ${
               activeTab === "comments" ? "bg-[#334AEC]" : ""
             }`}
-            onClick={() => setActiveTab("comments")}
+            onClick={() => {
+              setActiveTab("comments");
+              setSidebarOpen(false);
+            }}
           >
             <BiCommentDetail />
             Bình luận
+          </li>
+          <li
+            className={`p-2 cursor-pointer flex items-center gap-x-2 ${
+              activeTab === "addproduct" ? "bg-[#334AEC]" : ""
+            }`}
+            onClick={() => {
+              setActiveTab("addproduct");
+              setSidebarOpen(false);
+            }}
+          >
+            <FiPlusCircle />
+            Thêm sản phẩm
           </li>
         </ul>
         <div className="absolute w-full bottom-0 border-t-[1px] border-t-solid border-t-[rgba(255,255,255,0.1)]">
@@ -104,7 +148,10 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
-      <div className="w-[80%] absolute right-0 top-0">{renderContent()}</div>
+
+      <div className="w-full md:w-[80%] relative md:absolute right-0 top-0">
+        {renderContent()}
+      </div>
     </div>
   );
 };

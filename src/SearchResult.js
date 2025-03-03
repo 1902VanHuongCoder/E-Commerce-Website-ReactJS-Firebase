@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AppContext } from "../contextHelpers";
-import NavbarWithDropdown from "./Home/Navbar";
 import { useToast } from "rc-toastr";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { AppContext } from "./contextHelpers";
+
+import { NavBar } from "./helpers";
+
 import { FaShoppingCart } from "react-icons/fa";
 
 const SearchResult = () => {
@@ -14,10 +17,7 @@ const SearchResult = () => {
   // Handle buy product action
   const handleBuyProduct = (id) => {
     if (user) {
-      const product = state.products[0].filter((item) => item.id === id);
-      navigate("/order", {
-        state: product[0],
-      });
+      navigate(`/dathang/${id}`);
     } else {
       toast("Hãy đăng nhập để đặt hàng!");
     }
@@ -25,7 +25,7 @@ const SearchResult = () => {
 
   return (
     <div className="font-roboto">
-      <NavbarWithDropdown />
+      <NavBar />
       <div className="container mx-auto min-h-screen mt-5 rounded-lg px-4">
         <h1 className="text-xl sm:text-3xl font-semibold text-left text-gray-900 dark:text-white">
           Kết quả tìm kiếm cho từ khóa "{state.queryContent}"
@@ -78,9 +78,12 @@ const SearchResult = () => {
                     </div>
                   </div>
                   <div className="flex justify-between items-center gap-x-2">
-                    <button className="flex justify-center items-center px-3 py-2 text-sm font-medium text-center text-white hover:opacity-50 focus:outline-none bg-[#091F5B] w-full rounded-lg">
-                      <span className="hidden sm:block">Thêm vào giỏ hàng</span>
-                      <span className="block sm:hidden">Thêm </span>
+                    <button
+                      onClick={() => navigate(`/dathang/${item.id}`)}
+                      className="flex justify-center items-center px-3 py-2 text-sm font-medium text-center text-white hover:opacity-50 focus:outline-none bg-[#091F5B] w-full rounded-lg"
+                    >
+                      <span className="hidden sm:block">Mua ngay</span>
+                      <span className="block sm:hidden">Mua </span>
                       <FaShoppingCart className="w-3.5 h-3.5 ml-2" />
                     </button>
                   </div>
@@ -89,10 +92,10 @@ const SearchResult = () => {
             </ul>
           </div>
         ) : (
-          <div className="w-[90%] bg-white mx-auto h-[200px] border-dashed border-2 border-slate-400 flex justify-center items-center gap-1">
+          <div className="w-full mt-5 bg-white mx-auto h-[200px] border-dashed border-2 border-slate-400 flex justify-center items-center gap-1">
             <span className="text-xl">&#128580;</span>
             <p className="text-xl">
-              No match result for "{state.queryContent}"
+              Không có kết quả phù hợp cho "{state.queryContent}"
             </p>
           </div>
         )}

@@ -1,22 +1,17 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Feeback,
-  Banner,
-  Footer,
-  Products,
-  NavbarWithDropdown,
-  Loading,
-} from "../helpers";
-import { AppContext } from "../contextHelpers";
+import React, { useState, useContext } from "react";
+
+import { Feeback, Banner, Footer, Products, Loading, NavBar } from "./helpers";
+
+import { AppContext } from "./contextHelpers";
 
 import { useToast } from "rc-toastr";
-// import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { user, data } = useContext(AppContext);
+  console.log(
+    "<--------------------------- Home Run --------------------------->"
+  );
 
-  const navigate = useNavigate();
+  const { data } = useContext(AppContext);
   // Toast notification hook
   const { toast } = useToast();
 
@@ -35,20 +30,13 @@ const Home = () => {
     }
   };
 
-  // Check if the user is logged in and set the account state accordinglyss
-  useEffect(() => {
-    if (!user) {
-      navigate("/dangnhap");
-    }
-  }, [user, navigate]);
-
   return (
     <>
       {!data ? (
         <Loading />
       ) : (
         <div className="relative max-w-screen mx-auto">
-          <NavbarWithDropdown />
+          <NavBar />
           <Banner />
           <Products handleAddProduct={handleAddProduct} />
           <Feeback />

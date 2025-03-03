@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { db } from "../firebase_setup/firebase"; // Import your Firebase setup
+import { db } from "./firebase_setup/firebase"; // Import your Firebase setup
 import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
-import { AppContext } from "../contextHelpers";
-import { NavbarWithDropdown } from "../helpers";
+import { AppContext } from "./contextHelpers";
+import { NavBar } from "./helpers";
 import { useToast } from "rc-toastr";
 import { FaMoneyBillAlt, FaShoppingCart } from "react-icons/fa";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -66,8 +66,8 @@ const ProductDetails = () => {
 
   return (
     <div className="relative font-roboto">
-      <NavbarWithDropdown />
-      <div className="w-full px-4 sm:mb-[70px] mb-[140px] sm:px-10 min-h-screen mx-auto grid grid-cols-1 gap-y-5 lg:grid-cols-4 pt-1 sm:pt-10">
+      <NavBar />
+      <div className="w-full px-4 sm:mb-[40px] mb-[90px] sm:px-10 min-h-screen mx-auto grid grid-cols-1 gap-y-5 lg:grid-cols-4 pt-1 sm:pt-10">
         <div className="w-full border-r-[1px] border-r-solid border-gray-100 pr-4">
           <div className="w-full flex justify-center items-center">
             <img
@@ -151,7 +151,7 @@ const ProductDetails = () => {
           <span>Quay lại</span>
         </Link>
         <div className="flex flex-col sm:flex-row justify-end gap-y-2 sm:gap-x-5 w-full sm:w-fit">
-          <button className="flex items-center justify-center gap-x-2 border-[2px] border-solid border-[#091F5B] text-[#091F5B] py-3 px-6 rounded-md w-full sm:w-auto hover:bg-[#091F5B] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#091F5B]">
+          <button className="hidden items-center justify-center gap-x-2 border-[2px] border-solid border-[#091F5B] text-[#091F5B] py-3 px-6 rounded-md w-full sm:w-auto hover:bg-[#091F5B] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#091F5B]">
             <span>
               <FaShoppingCart />
             </span>

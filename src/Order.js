@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import NavbarWithDropdown from "./Home/Navbar";
-import { useToast } from "rc-toastr";
-import { LoginContext, AppContext } from "../contextHelpers";
+import { db } from "./firebase_setup/firebase";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase_setup/firebase";
+import { AppContext } from "./contextHelpers";
+import { useToast } from "rc-toastr";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { NavBar } from "./helpers";
 
 const Order = () => {
   const navigate = useNavigate("/");
-  const { account } = useContext(AppContext);
-  const { isLogin } = useContext(LoginContext);
+  const { user } = useContext(AppContext);
+
+  // const { isLogin } = useContext(LoginContext);
   const { toast } = useToast();
   const { productId } = useParams(); // Get product ID from URL parameters
   const [product, setProduct] = useState(null);
@@ -76,31 +77,30 @@ const Order = () => {
 
   // When user hit submit, will set these datas to database (firestore - firebase)
   const order = async () => {
-    if (isLogin) {
-      if (address === "" || phone === "" || colorIsChoosed.length < 0) {
-        toast("Đặt hàng không thành công, kiểm tra lại thông tin!");
-      } else {
-        let date = new Date();
-        await addDoc(collection(db, "orders"), {
-          phone: phone,
-          address: address,
-          productId: uuidv4(),
-          productAmount: amount,
-          totalAmount: totalAmount,
-          username: account.username,
-          imageURL: product.imageURL,
-          productColors: colorIsChoosed,
-          deliveryMethod: deliveryMethod,
-          productName: product.productName,
-          deliveryState: [
-            { state: "Wait confirming of boss", date: date.toDateString() },
-          ],
-        });
-        toast("Đặt hàng thành công!");
-      }
+    if (address === "" || phone === "" || colorIsChoosed.length < 0) {
+      toast("Đặt hàng không thành công, kiểm tra lại thông tin!");
     } else {
-      toast("Đăng nhập để đặt hàng");
-      return;
+      let date = new Date();
+      await addDoc(collection(db, "orders"), {
+        phone: phone,
+        address: address,
+        productId: uuidv4(),
+        productAmount: amount,
+        totalAmount: totalAmount,
+        username: user.username,
+        imageURL: product.imageURL,
+        productColors: colorIsChoosed,
+        deliveryMethod: deliveryMethod,
+        productName: product.productName,
+        deliveryState: [
+          {
+            stateCode: 0,
+            stateMessage: "Đang chờ xác nhận",
+            date: date.toDateString(),
+          },
+        ],
+      });
+      toast("Đặt hàng thành công!");
     }
   };
 
@@ -114,7 +114,7 @@ const Order = () => {
 
   return (
     <div className="relative max-w-screen mx-auto bg-[#FFF]">
-      <NavbarWithDropdown />
+      <NavBar />
       <div className="w-full mx-auto rounded large px-4 sm:px-20">
         <button
           onClick={() => navigate(-1)}

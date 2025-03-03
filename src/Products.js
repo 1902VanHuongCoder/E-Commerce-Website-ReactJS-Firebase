@@ -1,5 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { AppContext } from "./Context/AppContext";
+
 import {
   FaTshirt,
   FaUserAlt,
@@ -8,10 +11,9 @@ import {
   FaShoppingCart,
   FaHeart,
 } from "react-icons/fa";
-import { AppContext } from "../Context/AppContext";
 
 const Products = () => {
-  const { addToShoppingCart, data } = useContext(AppContext);
+  const { data } = useContext(AppContext);
   const navigate = useNavigate();
   const [filter, setFilter] = useState("all");
   const [lovedProducts, setLovedProducts] = useState([]);
@@ -199,7 +201,7 @@ const Products = () => {
 
                   <div className="flex justify-between items-center gap-x-2">
                     <button
-                      onClick={() => addToShoppingCart(data)}
+                      onClick={() => navigate(`/dathang/${data.id}`)}
                       className="flex justify-center items-center px-3 py-2 text-sm font-medium text-center text-white hover:opacity-50 focus:outline-none bg-[#091F5B] w-full rounded-lg"
                     >
                       <span className="hidden sm:block">Mua ngay</span>

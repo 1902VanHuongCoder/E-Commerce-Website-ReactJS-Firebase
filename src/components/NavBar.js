@@ -1,12 +1,15 @@
 import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AppContext } from "../../contextHelpers";
+
+import { AppContext } from "../contextHelpers";
+
 import { useToast } from "rc-toastr";
 
-import { FaHome, FaHistory, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import annbiLogo from "../../assets/annbiLogo.png";
+import annbiLogo from "../assets/annbiLogo.png";
 
-export default function NavbarWithDropdown() {
+import { FaHome, FaHistory, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+
+export default function NavBar() {
   const { toast } = useToast();
   const { user, logout, data } = useContext(AppContext);
   const navigate = useNavigate();

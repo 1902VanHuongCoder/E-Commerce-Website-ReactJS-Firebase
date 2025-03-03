@@ -3,15 +3,15 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../firebase_setup/firebase";
+import { db } from "./firebase_setup/firebase";
 
-import { AppContext } from "../contextHelpers";
+import { AppContext } from "./contextHelpers";
 
 import RingLoader from "react-spinners/RingLoader";
 import { useToast } from "rc-toastr";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-import fashionImg from "../assets/loginimage.png";
+import fashionImg from "./assets/loginimage.png";
 
 const Login = () => {
   const { updateUserData } = useContext(AppContext);
@@ -59,10 +59,16 @@ const Login = () => {
       res[0]?.password === data.password
     ) {
       toast("Đăng nhập thành công");
-      updateUserData(res[0]); // Update the global state with the user data
-      localStorage.setItem("loggedInAccount", data.email);
+      updateUserData(res[0]);
+      localStorage.setItem(
+        "loggedInAccount",
+        JSON.stringify({
+          email: data.email,
+          userId: res[0].id,
+        })
+      );
       if (res[0].role === "admin") {
-        navigate("/admin");
+        navigate("/quantrivien");
       } else {
         navigate("/");
       }

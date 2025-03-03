@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { IoMdCloseCircle } from "react-icons/io";
 import { useToast } from "rc-toastr";
 function UpdateOderState({ orderId, handleCloseUpdateOrderStateModal }) {
-  const {toast} = useToast();
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,

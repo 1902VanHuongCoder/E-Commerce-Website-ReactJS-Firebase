@@ -4,13 +4,18 @@ import App from "./App";
 import "./css/index.css";
 import { ToastProvider } from "rc-toastr";
 import "rc-toastr/dist/index.css";
-import AppProvider from "./components/Context/AppContext";
+import AppProvider from "./Context/AppContext";
+import { BrowserRouter as Router } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <Router>
+    {/* Toast provider store notification's state and configs*/}
     <ToastProvider
       config={{
         position: "top-left",
+        zIndex: 100,
         duration: 3000,
         toastBackgroundColor: (type) => {
           switch (type) {
@@ -32,5 +37,6 @@ root.render(
         <App />{" "}
       </AppProvider>
     </ToastProvider>
-  </React.StrictMode>
+  </Router>
+  // </React.StrictMode>
 );

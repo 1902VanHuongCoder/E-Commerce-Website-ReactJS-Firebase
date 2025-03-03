@@ -1,5 +1,5 @@
 import React from "react";
-import banner from "../../assets/showcase.png";
+import banner from "../assets/showcase.png";
 const Banner = ({ data }) => {
   return (
     <div className="w-full h-fit">

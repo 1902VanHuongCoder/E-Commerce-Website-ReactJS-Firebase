@@ -1,11 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import { db } from "../../firebase_setup/firebase";
+import { db } from "../firebase_setup/firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
+
+import { AppContext } from "../contextHelpers";
+
 import { useToast } from "rc-toastr";
-import { AppContext } from "../../contextHelpers";
+
+import logo from "../assets/annbiLogo.png";
+
 import { BiSolidUserCircle } from "react-icons/bi";
 import { IoIosPricetags } from "react-icons/io";
-import logo from "../../assets/annbiLogo.png";
 
 const Feeback = () => {
   const { user } = useContext(AppContext); // Get account information from AppContext
